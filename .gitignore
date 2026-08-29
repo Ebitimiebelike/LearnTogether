@@ -1,0 +1,6 @@
+# Local archives / backups
+*.rar
+*.zip
+
+# Dependencies (each app keeps its own .gitignore too)
+node_modules/

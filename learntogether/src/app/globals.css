@@ -1,0 +1,248 @@
+@import "tailwindcss";
+
+/*
+ * LearnTogether design system.
+ *
+ * Colours are defined once as raw values on `:root`, then exposed to Tailwind
+ * through `@theme inline` so that utilities like `bg-primary` compile to
+ * `var(--primary)`. Dark mode only ever redefines the raw values, which means
+ * no component needs a `dark:` variant.
+ *
+ * Accessibility rules baked in here:
+ *  - `--spacing-touch` is 56px, the minimum interactive size in the whole app.
+ *  - Body text starts at 18px; nothing in the app is smaller than 16px.
+ *  - Every foreground/background pairing below clears WCAG AA at its intended
+ *    text size.
+ */
+
+:root {
+  color-scheme: light;
+
+  /* Calm, trustworthy blue. Used for primary actions and navigation. */
+  --primary: #2557c7;
+  --primary-strong: #1c419a;
+  --primary-soft: #e8eefc;
+  --on-primary: #ffffff;
+
+  /* Success: correct answers and mastered progress. */
+  --success: #17703c;
+  --success-soft: #e2f5e9;
+  --on-success: #ffffff;
+
+  /* Warm yellow: stars, badges and rewards. Dark text sits on it, never white. */
+  --reward: #f0a316;
+  --reward-soft: #fdf3dd;
+  --on-reward: #4a3105;
+
+  /* "Good try" tone. Warm and soft — never an alarming red. */
+  --gentle: #b4541f;
+  --gentle-soft: #fdeee4;
+
+  /* Neutrals. A warm off-white keeps long sessions comfortable. */
+  --canvas: #f7f6f3;
+  --surface: #ffffff;
+  --surface-sunken: #efede8;
+  --ink: #1a1c21;
+  --ink-muted: #55585f;
+  --border-subtle: #dedbd4;
+
+  --elevation-card: 0 1px 2px rgb(26 28 33 / 0.06), 0 4px 12px rgb(26 28 33 / 0.06);
+  --elevation-raised: 0 2px 4px rgb(26 28 33 / 0.08), 0 10px 24px rgb(26 28 33 / 0.1);
+}
+
+/*
+ * Dark theme. Applied when the system prefers dark and the learner has not
+ * explicitly chosen light, or when dark is chosen outright.
+ */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --primary: #8ab0ff;
+    --primary-strong: #a9c5ff;
+    --primary-soft: #1e2740;
+    --on-primary: #10192e;
+
+    --success: #6cd39a;
+    --success-soft: #17301f;
+    --on-success: #08210f;
+
+    --reward: #f5bf5a;
+    --reward-soft: #302512;
+    --on-reward: #2a1c02;
+
+    --gentle: #f0a985;
+    --gentle-soft: #33201a;
+
+    --canvas: #14161b;
+    --surface: #1d2027;
+    --surface-sunken: #262a33;
+    --ink: #f2f1ee;
+    --ink-muted: #b3b7bf;
+    --border-subtle: #343943;
+
+    --elevation-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 4px 12px rgb(0 0 0 / 0.35);
+    --elevation-raised: 0 2px 4px rgb(0 0 0 / 0.45), 0 10px 24px rgb(0 0 0 / 0.45);
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --primary: #8ab0ff;
+  --primary-strong: #a9c5ff;
+  --primary-soft: #1e2740;
+  --on-primary: #10192e;
+
+  --success: #6cd39a;
+  --success-soft: #17301f;
+  --on-success: #08210f;
+
+  --reward: #f5bf5a;
+  --reward-soft: #302512;
+  --on-reward: #2a1c02;
+
+  --gentle: #f0a985;
+  --gentle-soft: #33201a;
+
+  --canvas: #14161b;
+  --surface: #1d2027;
+  --surface-sunken: #262a33;
+  --ink: #f2f1ee;
+  --ink-muted: #b3b7bf;
+  --border-subtle: #343943;
+
+  --elevation-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 4px 12px rgb(0 0 0 / 0.35);
+  --elevation-raised: 0 2px 4px rgb(0 0 0 / 0.45), 0 10px 24px rgb(0 0 0 / 0.45);
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-strong: var(--primary-strong);
+  --color-primary-soft: var(--primary-soft);
+  --color-on-primary: var(--on-primary);
+
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-on-success: var(--on-success);
+
+  --color-reward: var(--reward);
+  --color-reward-soft: var(--reward-soft);
+  --color-on-reward: var(--on-reward);
+
+  --color-gentle: var(--gentle);
+  --color-gentle-soft: var(--gentle-soft);
+
+  --color-canvas: var(--canvas);
+  --color-surface: var(--surface);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-border-subtle: var(--border-subtle);
+
+  --font-sans: var(--font-app-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+
+  /* The minimum interactive size, available as h-touch / min-h-touch / p-touch. */
+  --spacing-touch: 56px;
+
+  --radius-card: 16px;
+  --radius-button: 16px;
+  --radius-image: 12px;
+
+  --shadow-card: var(--elevation-card);
+  --shadow-raised: var(--elevation-raised);
+}
+
+html {
+  /* 18px base: body copy is comfortably readable at arm's length on a tablet. */
+  font-size: 18px;
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  background-color: var(--canvas);
+  color: var(--ink);
+  font-family: var(--font-app-sans), ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  /* Stops the browser inflating text in landscape on some tablets. */
+  text-size-adjust: 100%;
+}
+
+/*
+ * Tracing and tap targets: suppress the behaviours that make a touchscreen
+ * frustrating for a learner with limited motor control.
+ */
+button,
+[role="button"] {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* A single, consistent focus ring, visible in both themes. */
+:focus-visible {
+  outline: 3px solid var(--primary);
+  outline-offset: 3px;
+}
+
+/* No flashing: all motion is short, and removable. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes lt-pop {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes lt-rise {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes lt-float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-pop {
+  animation: lt-pop 320ms ease-out both;
+}
+
+.animate-rise {
+  animation: lt-rise 260ms ease-out both;
+}
+
+/* Slow, gentle drift. Never a flash or a strobe. */
+.animate-float {
+  animation: lt-float 2.6s ease-in-out infinite;
+}
