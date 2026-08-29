@@ -43,6 +43,25 @@ letters and numbers you have never opened — should still work.
 > The build uses `next build --webpack`. Next.js 16 defaults to Turbopack, but
 > Serwist's service-worker plugin still requires webpack.
 
+## Deploying
+
+The app lives in the `learntogether/` subdirectory of this repository, so a
+host needs to be told two things:
+
+- **Root Directory:** `learntogether` — a project-level setting in the Vercel
+  dashboard. It cannot be set from a config file, so it has to be set there.
+- **Framework:** Next.js, built with `npm run build`. Both are pinned in
+  [`vercel.json`](vercel.json), which takes precedence over dashboard settings,
+  so framework detection cannot silently fall back to "static site" and publish
+  only `public/`.
+
+The build command matters: `npm run build` runs `next build --webpack`. Next.js
+16 defaults to Turbopack, and a plain `next build` would fail because Serwist's
+service-worker plugin requires webpack.
+
+If pages 404 but files like `/icons/icon-192.png` still load, the deployment is
+serving only `public/` — the framework was not detected as Next.js.
+
 ## Installing on a tablet
 
 Serve the production build over HTTPS (or `localhost`), open it in Chrome or
