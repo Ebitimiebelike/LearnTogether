@@ -18,3 +18,16 @@ if (!Element.prototype.setPointerCapture) {
   Element.prototype.releasePointerCapture = vi.fn();
   Element.prototype.hasPointerCapture = vi.fn(() => false);
 }
+
+// jsdom implements <dialog> but not its modal methods. The Modal component uses
+// the native element on purpose, for the platform's own focus trapping, so the
+// missing methods are stubbed rather than the component changed.
+if (typeof HTMLDialogElement !== "undefined" && !HTMLDialogElement.prototype.showModal) {
+  HTMLDialogElement.prototype.showModal = function showModal(this: HTMLDialogElement) {
+    this.open = true;
+  };
+  HTMLDialogElement.prototype.close = function close(this: HTMLDialogElement) {
+    this.open = false;
+    this.dispatchEvent(new Event("close"));
+  };
+}

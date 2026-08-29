@@ -7,6 +7,7 @@ import { Button, ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { PageHeader } from "@/components/ui/PageHeader";
 import { useSession } from "@/features/learners/SessionProvider";
+import { InstallAppButton } from "@/components/pwa/InstallAppButton";
 import { PIN_LENGTH, isValidPinFormat } from "@/features/caregiver/pin";
 import { useAudio } from "@/hooks/useAudio";
 import { cn } from "@/lib/utils/cn";
@@ -122,6 +123,11 @@ export default function SettingsPage() {
               aloud. Everything else in the app still works.
             </p>
           )}
+        </section>
+
+        <section className="flex flex-col gap-3">
+          <h2 className="text-xl font-extrabold">App</h2>
+          <InstallAppButton />
         </section>
 
         <section className="flex flex-col gap-3">

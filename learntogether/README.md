@@ -64,9 +64,25 @@ serving only `public/` — the framework was not detected as Next.js.
 
 ## Installing on a tablet
 
-Serve the production build over HTTPS (or `localhost`), open it in Chrome or
-Safari, and use **Add to Home Screen**. The app then launches standalone, with
-no browser chrome, and works with no network at all.
+Visiting the site in a browser for the first time shows a welcome page with an
+**Install app** button. What that button does depends on the platform, because
+the platforms genuinely differ:
+
+- **Android / Chromium** fires `beforeinstallprompt`, which is captured and
+  replayed to open the real native install dialog.
+- **iOS / Safari** exposes no programmatic install at all, so the button opens
+  Share → Add to Home Screen instructions instead of pretending it can.
+- **Anywhere else** it says where installing is possible rather than showing a
+  button that would do nothing.
+
+Either way the result is an icon on the home screen that launches standalone,
+with no browser chrome, and works with no network at all.
+
+The welcome page is only ever shown to a first-time visitor in a browser tab.
+Anyone launching from the home screen, or returning with a learner already set
+up, goes straight through — nobody should have to walk past a landing page to
+reach a lesson. The same button also lives in Settings, for anyone who skipped
+it. Requires HTTPS (or `localhost`).
 
 ---
 
@@ -76,7 +92,7 @@ no browser chrome, and works with no network at all.
 src/
 ├── app/                      Routes only — thin shells over features
 │   ├── layout.tsx            Fonts, metadata, viewport, theme, providers
-│   ├── page.tsx              Splash; routes to onboarding or home
+│   ├── page.tsx              Welcome + install for new visitors; splash otherwise
 │   ├── onboarding/ setup/ first-lesson/
 │   ├── (learner)/            Learner shell with bottom navigation
 │   │   ├── home/
@@ -94,6 +110,7 @@ src/
 │   ├── learning/             LessonCard, CategoryCard, LessonGrid, AudioButton,
 │   │                         ChoiceButton, Illustration, QuantityDisplay,
 │   │                         FeedbackBanner
+│   ├── pwa/                  InstallAppButton
 │   ├── tracing/              TracingCanvas
 │   ├── games/                MatchGame
 │   └── rewards/              AvatarCard, RewardCard, StarCount, Celebration
@@ -112,9 +129,9 @@ src/
 │   │                         MusicService + cues.ts (theme music)
 │   ├── storage/              driver.ts (IndexedDB), repositories.ts
 │   ├── geometry/             path.ts — SVG path sampler
-│   ├── pwa/                  Service worker registration
+│   ├── pwa/                  Service worker registration, install detection
 │   └── utils/                cn, date, random
-├── hooks/                    useAudio, useTheme, useLessonVisit
+├── hooks/                    useAudio, useTheme, useLessonVisit, useInstallApp
 └── types/                    Domain types
 tests/                        Vitest suites
 scripts/generate-icons.mjs    PNG icon generator (no image dependency)
@@ -249,7 +266,7 @@ left to each screen:
 npm test
 ```
 
-319 tests across 12 files:
+337 tests across 13 files:
 
 | File | Covers |
 | --- | --- |
@@ -264,6 +281,7 @@ npm test
 | `TracingCanvas.test.tsx` | Pointer events: draw, capture, cancel, gap interpolation, completion reporting |
 | `flows.test.tsx` | Onboarding, learner creation, the first lesson, Home, a letter lesson, identification practice, the music setting |
 | `music.test.ts` | Cue playback, self-stopping, ducking under speech, autoplay refusal and gesture retry |
+| `install.test.tsx` | Install-state resolution per platform, the native prompt, iOS instructions, and who sees the welcome page |
 
 Several tests assert the app's *promises* rather than its mechanics — that a
 wrong answer leaves the correct option enabled, that feedback never contains

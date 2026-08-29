@@ -43,6 +43,7 @@ import { PracticeActivity } from "@/features/practice/PracticeActivity";
 import { LetterLesson } from "@/features/alphabet/LetterLesson";
 import HomePage from "@/app/(learner)/home/page";
 import SettingsPage from "@/app/(caregiver)/settings/page";
+import LandingPage from "@/app/page";
 import { getLetter } from "@/data/alphabet";
 import type { Learner } from "@/types";
 
@@ -417,5 +418,62 @@ describe("identification practice", () => {
     );
     expect(await screen.findByText("Listen, then choose.")).toBeInTheDocument();
     expect(screen.queryByText(/^Find /)).toBeNull();
+  });
+});
+
+describe("the landing page", () => {
+  beforeEach(() => {
+    // jsdom has no matchMedia; report "running in a browser tab, not installed".
+    vi.stubGlobal(
+      "matchMedia",
+      vi.fn(() => ({
+        matches: false,
+        addEventListener: vi.fn(),
+        removeEventListener: vi.fn(),
+      })),
+    );
+  });
+
+  it("welcomes a first-time visitor and offers to install", async () => {
+    renderApp(<LandingPage />);
+    // Anchor on something only the landing renders: the splash shows the same
+    // heading, so waiting on that would resolve against a node about to be
+    // replaced.
+    expect(
+      await screen.findByRole("button", { name: /Start in the browser/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "LearnTogether" })).toBeInTheDocument();
+    expect(screen.getByText(/Works with no internet once installed/i)).toBeInTheDocument();
+  });
+
+  it("lets a first-time visitor skip straight into the app", async () => {
+    const user = userEvent.setup();
+    renderApp(<LandingPage />);
+    await user.click(
+      await screen.findByRole("button", { name: /Start in the browser/i }),
+    );
+    expect(navigation.push).toHaveBeenCalledWith("/onboarding");
+  });
+
+  it("never shows a returning learner the landing page", async () => {
+    await seedLearner();
+    renderApp(<LandingPage />);
+    // Straight to Home: nobody should walk past a landing page to reach a lesson.
+    await waitFor(() => expect(navigation.replace).toHaveBeenCalledWith("/home"));
+    expect(screen.queryByRole("button", { name: /Start in the browser/i })).toBeNull();
+  });
+
+  it("sends a learner who has not finished onboarding back into it", async () => {
+    await repositories.learners.save(LEARNER);
+    await repositories.settings.save({
+      audioEnabled: true,
+      soundEffectsEnabled: true,
+      musicEnabled: false,
+      theme: "system",
+      caregiverPin: null,
+      onboardingComplete: false,
+    });
+    renderApp(<LandingPage />);
+    await waitFor(() => expect(navigation.replace).toHaveBeenCalledWith("/onboarding"));
   });
 });
