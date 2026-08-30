@@ -182,7 +182,9 @@ export function PracticeActivity({
         </AudioButton>
       </div>
 
-      <ul className="grid grid-cols-3 gap-3 max-[420px]:grid-cols-2">
+      {/* Capped in landscape: a tile as tall as the screen is harder to aim at,
+          not easier, and would push the feedback banner out of view. */}
+      <ul className="mx-auto grid w-full grid-cols-3 gap-3 max-[420px]:grid-cols-2 landscape:max-w-[min(100%,58vh)]">
         {question.choices.map((choice) => (
           <li key={choice.item.id}>
             <ChoiceButton

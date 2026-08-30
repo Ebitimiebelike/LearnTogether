@@ -4,7 +4,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { getLetter } from "@/data/alphabet";
 import { AudioButton } from "@/components/learning/AudioButton";
-import { ChoiceButton, type ChoiceState } from "@/components/learning/ChoiceButton";
+import {
+  ChoiceButton,
+  type ChoiceState,
+} from "@/components/learning/ChoiceButton";
 import { FeedbackBanner } from "@/components/learning/FeedbackBanner";
 import { Illustration } from "@/components/learning/Illustration";
 import { Celebration } from "@/components/rewards/Celebration";
@@ -34,15 +37,19 @@ export function FirstLesson() {
   const { recordActivity, updateSettings, learner } = useSession();
 
   const [stage, setStage] = useState<Stage>("show");
-  const [choiceStates, setChoiceStates] = useState<Record<string, ChoiceState>>({});
+  const [choiceStates, setChoiceStates] = useState<Record<string, ChoiceState>>(
+    {},
+  );
   const [feedback, setFeedback] = useState<string | null>(null);
   const [starsAwarded, setStarsAwarded] = useState(0);
   const [newBadges, setNewBadges] = useState<Badge[]>([]);
 
   // Say the letter as soon as it appears, and speak the instruction at "find".
   useEffect(() => {
-    if (stage === "show") void audio.speakLetter(LETTER_A.value, LETTER_A.audio);
-    if (stage === "word") void audio.speakInstruction(`A is for ${LETTER_A.word}.`);
+    if (stage === "show")
+      void audio.speakLetter(LETTER_A.value, LETTER_A.audio);
+    if (stage === "word")
+      void audio.speakInstruction(`A is for ${LETTER_A.word}.`);
     if (stage === "find") void audio.speakInstruction("Find A.");
   }, [stage, audio]);
 
@@ -90,10 +97,15 @@ export function FirstLesson() {
           That is how every activity works. Nothing is timed, and you can try as
           many times as you like.
         </p>
-        <Button size="lg" icon="home" fullWidth onClick={() => {
+        <Button
+          size="lg"
+          icon="home"
+          fullWidth
+          onClick={() => {
             audio.stopMusic();
             router.replace("/home");
-          }}>
+          }}
+        >
           Go to Home
         </Button>
       </Screen>
@@ -108,7 +120,7 @@ export function FirstLesson() {
 
       {stage === "show" && (
         <div className="flex flex-col items-center gap-6">
-          <p className="text-[10rem] font-extrabold leading-none animate-pop">
+          <p className="text-[clamp(5rem,26vmin,10rem)] font-extrabold leading-none animate-pop">
             {LETTER_A.value}
           </p>
           <AudioButton
@@ -121,8 +133,10 @@ export function FirstLesson() {
       )}
 
       {stage === "word" && (
-        <div className="flex flex-col items-center gap-5">
-          <p className="text-8xl font-extrabold leading-none">{LETTER_A.value}</p>
+        <div className="flex flex-col items-center gap-5 landscape:flex-row landscape:justify-center landscape:gap-8">
+          <p className="text-8xl font-extrabold leading-none">
+            {LETTER_A.value}
+          </p>
           <Illustration item={LETTER_A} size={112} className="p-6" />
           <p className="text-3xl font-extrabold">{LETTER_A.word}</p>
           <AudioButton
@@ -143,7 +157,9 @@ export function FirstLesson() {
                 <ChoiceButton
                   item={item}
                   state={choiceStates[item.id] ?? "idle"}
-                  onSelect={() => handleChoice(item.id === LETTER_A.id, item.id)}
+                  onSelect={() =>
+                    handleChoice(item.id === LETTER_A.id, item.id)
+                  }
                 />
               </li>
             ))}

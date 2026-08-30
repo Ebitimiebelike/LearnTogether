@@ -85,67 +85,81 @@ export function TraceActivity({
   };
 
   return (
-    <div className="flex flex-col gap-5 px-5 pb-8">
-      {toolbar}
+    /**
+     * Portrait stacks; landscape puts the canvas beside its controls.
+     *
+     * In landscape, vertical space is the scarce resource and horizontal space
+     * is plentiful — stacking would push the buttons below the fold. This is
+     * keyed off orientation rather than a width breakpoint because a landscape
+     * phone has the same problem as a landscape tablet.
+     */
+    <div className="flex flex-col gap-5 px-5 pb-8 landscape:flex-row landscape:items-start landscape:gap-6">
+      <div className="flex min-w-0 flex-col gap-5 landscape:flex-1">
+        {toolbar}
 
-      <TracingCanvas
-        key={`${character}-${attempt}`}
-        strokes={strokes}
-        character={character}
-        onComplete={handleComplete}
-        onStrokeEnd={handleStrokeEnd}
-      />
-
-      {celebrating ? (
-        <Celebration
-          show
-          message={feedback?.message ?? `Great job tracing ${character}!`}
-          starsAwarded={starsAwarded}
-          newBadges={newBadges}
+        <TracingCanvas
+          key={`${character}-${attempt}`}
+          strokes={strokes}
+          character={character}
+          onComplete={handleComplete}
+          onStrokeEnd={handleStrokeEnd}
         />
-      ) : (
-        feedback && <FeedbackBanner tone="encouraging" message={feedback.message} />
-      )}
-
-      <div className="flex flex-wrap gap-3">
-        <AudioButton
-          onPlay={speak}
-          label={`Say ${character}`}
-          tone="surface"
-          className="flex-1"
-        >
-          Listen
-        </AudioButton>
-        <Button
-          variant="secondary"
-          icon="close"
-          onClick={() => reset(false)}
-          className="flex-1"
-        >
-          Clear
-        </Button>
-        <Button
-          variant="secondary"
-          icon="retry"
-          onClick={() => reset(true)}
-          className="flex-1"
-        >
-          Try again
-        </Button>
       </div>
 
-      <Button
-        size="lg"
-        icon="next"
-        iconAfter
-        fullWidth
-        onClick={() => {
-          audio.stopMusic();
-          router.push(nextHref ?? finishHref);
-        }}
-      >
-        {nextHref ? "Next" : "Finish"}
-      </Button>
+      <div className="flex min-w-0 flex-col gap-5 landscape:flex-1 landscape:pt-1">
+        {celebrating ? (
+          <Celebration
+            show
+            message={feedback?.message ?? `Great job tracing ${character}!`}
+            starsAwarded={starsAwarded}
+            newBadges={newBadges}
+          />
+        ) : (
+          feedback && (
+            <FeedbackBanner tone="encouraging" message={feedback.message} />
+          )
+        )}
+
+        <div className="flex flex-wrap gap-3">
+          <AudioButton
+            onPlay={speak}
+            label={`Say ${character}`}
+            tone="surface"
+            className="flex-1"
+          >
+            Listen
+          </AudioButton>
+          <Button
+            variant="secondary"
+            icon="close"
+            onClick={() => reset(false)}
+            className="flex-1"
+          >
+            Clear
+          </Button>
+          <Button
+            variant="secondary"
+            icon="retry"
+            onClick={() => reset(true)}
+            className="flex-1"
+          >
+            Try again
+          </Button>
+        </div>
+
+        <Button
+          size="lg"
+          icon="next"
+          iconAfter
+          fullWidth
+          onClick={() => {
+            audio.stopMusic();
+            router.push(nextHref ?? finishHref);
+          }}
+        >
+          {nextHref ? "Next" : "Finish"}
+        </Button>
+      </div>
     </div>
   );
 }

@@ -142,8 +142,14 @@ export function TracingCanvas({
       role="application"
       aria-label={`Tracing area for ${character}. Follow the line with your finger.`}
       // `touch-none` stops the page scrolling under a tracing finger.
+      //
+      // The square is capped at 68vh as well as 100% width. Without the height
+      // cap, a full-width square on a landscape tablet would be taller than the
+      // screen and push the Clear / Try again / Next buttons out of reach —
+      // which matters most for exactly the learner who can least afford to go
+      // hunting for them.
       className={cn(
-        "aspect-square w-full touch-none select-none rounded-card bg-surface shadow-card",
+        "mx-auto block aspect-square w-full max-w-[min(100%,68vh)] touch-none select-none rounded-card bg-surface shadow-card",
         className,
       )}
       onPointerDown={handlePointerDown}

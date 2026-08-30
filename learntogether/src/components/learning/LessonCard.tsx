@@ -41,7 +41,7 @@ export function LessonCard({ item, href, status, onPreview }: LessonCardProps) {
       aria-label={`${item.category === "number" ? item.writtenWord ?? item.value : item.value}, ${STATUS_LABEL[status]}`}
       className={cn(
         "relative flex aspect-square items-center justify-center rounded-card bg-surface font-extrabold shadow-card transition-transform duration-150 active:scale-95",
-        "text-[clamp(2.25rem,9vw,3.5rem)] leading-none",
+        "text-[clamp(1.75rem,7vmin,3rem)] leading-none",
         status === "mastered" && "ring-4 ring-success",
       )}
     >

@@ -62,7 +62,9 @@ export default function LandingPage() {
         <span aria-hidden="true" className="text-8xl animate-float">
           📚
         </span>
-        <h1 className="text-4xl font-extrabold tracking-tight">LearnTogether</h1>
+        <h1 className="text-4xl font-extrabold tracking-tight">
+          LearnTogether
+        </h1>
         <p className="text-xl text-ink-muted">Learn at your own pace.</p>
         <p role="status" className="sr-only">
           Loading LearnTogether
@@ -77,14 +79,16 @@ export default function LandingPage() {
         <span aria-hidden="true" className="text-7xl animate-float">
           📚
         </span>
-        <h1 className="text-4xl font-extrabold tracking-tight">LearnTogether</h1>
+        <h1 className="text-4xl font-extrabold tracking-tight">
+          LearnTogether
+        </h1>
         <p className="max-w-md text-xl text-ink-muted">
           Letters, numbers and tracing practice — built to be calm, patient and
           easy to tap.
         </p>
       </header>
 
-      <ul className="flex flex-col gap-3">
+      <ul className="flex flex-col gap-3 landscape:grid landscape:grid-cols-2">
         {FEATURES.map((feature) => (
           <li
             key={feature.text}
@@ -98,7 +102,7 @@ export default function LandingPage() {
         ))}
       </ul>
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-3 landscape:mx-auto landscape:w-full landscape:max-w-xl">
         <InstallAppButton />
         <Button
           size="lg"

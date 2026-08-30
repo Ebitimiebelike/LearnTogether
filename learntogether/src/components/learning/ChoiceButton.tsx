@@ -38,7 +38,7 @@ export function ChoiceButton({ item, state, onSelect, disabled }: ChoiceButtonPr
       aria-label={spoken}
       className={cn(
         "relative flex aspect-square min-h-[112px] w-full items-center justify-center rounded-card border-4 font-extrabold shadow-card transition-transform duration-150 active:scale-95",
-        "text-[clamp(3rem,14vw,6rem)] leading-none",
+        "text-[clamp(2.5rem,11vmin,5rem)] leading-none",
         STATES[state],
         state === "correct" && "animate-pop",
       )}

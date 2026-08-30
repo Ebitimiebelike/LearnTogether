@@ -244,6 +244,14 @@ left to each screen:
 - **18px base font size**; nothing in the app is below 16px.
 - **High contrast** in both light and dark themes; every foreground/background
   pairing clears WCAG AA at its intended size.
+- **Orientation is never locked.** A tablet may be in a stand, mounted, or held
+  by someone who cannot turn it, so the manifest declares `orientation: "any"`
+  and every screen is built for both. In landscape — where vertical space is the
+  scarce resource — the tracing canvas, lesson screens and onboarding lay out
+  side by side instead of stacking, and the tracing canvas is capped against
+  viewport height so its buttons always stay in reach. Display type is sized in
+  `vmin`, not `vw`, so a letter is the same size whichever way the device is
+  held.
 - **No timers anywhere.** No question, activity or animation is on a clock.
 - **No flashing.** Animations are short, single-shot and gentle, and all of them
   respect `prefers-reduced-motion`.
@@ -266,7 +274,7 @@ left to each screen:
 npm test
 ```
 
-337 tests across 13 files:
+343 tests across 14 files:
 
 | File | Covers |
 | --- | --- |
@@ -282,6 +290,7 @@ npm test
 | `flows.test.tsx` | Onboarding, learner creation, the first lesson, Home, a letter lesson, identification practice, the music setting |
 | `music.test.ts` | Cue playback, self-stopping, ducking under speech, autoplay refusal and gesture retry |
 | `install.test.tsx` | Install-state resolution per platform, the native prompt, iOS instructions, and who sees the welcome page |
+| `orientation.test.ts` | Manifest never locks orientation; no text sized by viewport width; the tracing canvas is height-capped |
 
 Several tests assert the app's *promises* rather than its mechanics — that a
 wrong answer leaves the correct option enabled, that feedback never contains

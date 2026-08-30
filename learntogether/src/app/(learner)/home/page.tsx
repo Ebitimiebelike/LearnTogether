@@ -111,7 +111,8 @@ export default function HomePage() {
       </Card>
 
       <h2 className="mt-1 text-xl font-extrabold">What would you like to do?</h2>
-      <div className="grid grid-cols-2 gap-4">
+      {/* Three across in landscape, so the whole grid is visible without scrolling. */}
+      <div className="grid grid-cols-2 gap-4 landscape:grid-cols-3">
         <CategoryCard
           href="/learn/alphabet"
           title="Letters"

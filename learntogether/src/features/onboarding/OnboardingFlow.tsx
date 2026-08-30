@@ -50,21 +50,34 @@ export function OnboardingFlow() {
         </Button>
       </div>
 
-      <div className="flex flex-col items-center gap-6 text-center">
-        <span aria-hidden="true" className="text-8xl">
+      {/* Landscape sets the emoji beside the words; stacked, they do not fit
+          the short height of a landscape screen. */}
+      <div className="flex flex-col items-center gap-6 text-center landscape:flex-row landscape:gap-10 landscape:text-left">
+        <span aria-hidden="true" className="text-8xl landscape:shrink-0">
           {current.emoji}
         </span>
-        {/* Keyed so each step is announced as new content, not an edit. */}
-        <h1 key={`title-${step}`} className="text-3xl font-extrabold animate-rise">
-          {current.title}
-        </h1>
-        <p key={`body-${step}`} className="max-w-md text-xl text-ink-muted animate-rise">
-          {current.body}
-        </p>
+        <div className="flex flex-col items-center gap-6 landscape:items-start">
+          {/* Keyed so each step is announced as new content, not an edit. */}
+          <h1
+            key={`title-${step}`}
+            className="text-3xl font-extrabold animate-rise"
+          >
+            {current.title}
+          </h1>
+          <p
+            key={`body-${step}`}
+            className="max-w-md text-xl text-ink-muted animate-rise"
+          >
+            {current.body}
+          </p>
+        </div>
       </div>
 
       <div className="flex flex-col gap-6">
-        <ol className="flex justify-center gap-3" aria-label="Onboarding progress">
+        <ol
+          className="flex justify-center gap-3"
+          aria-label="Onboarding progress"
+        >
           {ONBOARDING_STEPS.map((item, index) => (
             <li
               key={item.title}

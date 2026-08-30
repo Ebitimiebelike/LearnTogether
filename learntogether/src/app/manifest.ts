@@ -13,7 +13,13 @@ export default function manifest(): MetadataRoute.Manifest {
     start_url: "/",
     scope: "/",
     display: "standalone",
-    orientation: "portrait-primary",
+    /**
+     * Deliberately unlocked. A tablet is often in a stand or mounted in a fixed
+     * orientation, and a learner may not be able to turn it — so forcing either
+     * orientation would make the app unusable for someone. Every screen is
+     * built to work in both.
+     */
+    orientation: "any",
     background_color: "#f7f6f3",
     theme_color: "#2557c7",
     categories: ["education", "kids"],

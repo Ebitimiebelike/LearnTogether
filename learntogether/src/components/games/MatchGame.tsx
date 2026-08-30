@@ -125,7 +125,7 @@ export function MatchGame({ pool, size = 3, title }: MatchGameProps) {
         {title}
       </p>
 
-      <div className="grid grid-cols-2 gap-4">
+      <div className="mx-auto grid w-full grid-cols-2 gap-4 landscape:max-w-3xl">
         <ul className="flex flex-col gap-3">
           {left.map((item) => {
             const isMatched = matched.includes(item.id);
